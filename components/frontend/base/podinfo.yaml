@@ -4,7 +4,7 @@ kind: HelmRepository
 metadata:
   name: podinfo
 spec:
-  interval: 5m
+  interval: 12h
   type: oci
   url: oci://ghcr.io/stefanprodan/charts
 ---
@@ -18,14 +18,18 @@ spec:
     spec:
       chart: podinfo
       version: 6.5.0
-      interval: 5m
       sourceRef:
         kind: HelmRepository
         name: podinfo
   interval: 50m
+  driftDetection:
+    mode: enabled
   install:
+    timeout: 10m
     remediation:
       retries: 3
+  upgrade:
+    timeout: 10m
   # Default values
   # https://github.com/stefanprodan/podinfo/blob/master/charts/podinfo/values.yaml
   values:
