@@ -1,0 +1,20 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: frontend-podinfo
+spec:
+  image: "ghcr.io/stefanprodan/charts/podinfo"
+  interval: 10m
+  provider: generic
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: frontend-podinfo
+spec:
+  imageRepositoryRef:
+    name: frontend-podinfo
+  policy:
+    semver:
+      range: ">=1.0.0"
