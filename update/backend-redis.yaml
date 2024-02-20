@@ -1,0 +1,20 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: backend-redis
+spec:
+  image: "registry-1.docker.io/bitnamicharts/redis"
+  interval: 12h
+  provider: generic
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: backend-redis
+spec:
+  imageRepositoryRef:
+    name: backend-redis
+  policy:
+    semver:
+      range: ">=1.0.0"

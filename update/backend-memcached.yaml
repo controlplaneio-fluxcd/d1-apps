@@ -1,0 +1,20 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: backend-memcached
+spec:
+  image: "registry-1.docker.io/bitnamicharts/memcached"
+  interval: 12h
+  provider: generic
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: backend-memcached
+spec:
+  imageRepositoryRef:
+    name: backend-memcached
+  policy:
+    semver:
+      range: ">=1.0.0"

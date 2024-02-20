@@ -3,4 +3,6 @@ kind: Kustomization
 namespace: apps-update
 resources:
   - frontend-podinfo.yaml
+  - backend-memcached.yaml
+  - backend-redis.yaml
 
