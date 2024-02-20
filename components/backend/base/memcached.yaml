@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: memcached
-      version: 6.11.3 # {"$imagepolicy": "apps-update:backend-memcached:tag"}
+      version: 6.11.5 # {"$imagepolicy": "apps-update:backend-memcached:tag"}
       sourceRef:
         kind: HelmRepository
         name: bitnamicharts
