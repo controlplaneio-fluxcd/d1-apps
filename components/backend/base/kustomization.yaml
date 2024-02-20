@@ -4,3 +4,4 @@ namespace: backend
 resources:
   - bitnamicharts.yaml
   - memcached.yaml
+  - redis.yaml

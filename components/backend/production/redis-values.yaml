@@ -1,0 +1,11 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: redis
+spec:
+  values:
+    master:
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"

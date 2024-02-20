@@ -4,5 +4,4 @@ resources:
   - ../base
 patches:
   - path: memcached-values.yaml
-    target:
-      kind: HelmRelease
+  - path: redis-values.yaml
