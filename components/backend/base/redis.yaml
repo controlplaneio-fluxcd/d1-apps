@@ -24,11 +24,11 @@ spec:
   # https://artifacthub.io/packages/helm/bitnami/redis?modal=values
   values:
     master:
-      kind: Deployment
+      kind: StatefulSet
       persistence:
         enabled: false
     replica:
-      kind: Deployment
+      kind: StatefulSet
       replicaCount: 1
       persistence:
         enabled: false
