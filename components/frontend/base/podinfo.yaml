@@ -35,3 +35,8 @@ spec:
     ingress:
       enabled: true
       className: nginx
+      hosts:
+        - host: podinfo.${CLUSTER_DOMAIN}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific

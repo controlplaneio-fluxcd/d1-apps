@@ -4,9 +4,4 @@ metadata:
   name: podinfo
 spec:
   values:
-    ingress:
-      hosts:
-        - host: podinfo.production
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
+    replicaCount: 2
