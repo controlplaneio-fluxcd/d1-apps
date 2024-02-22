@@ -1,9 +1,21 @@
 # d1-apps
 
-This repository is managed by the dev teams who are responsible for
-the delivery of applications to the Kubernetes cluster fleet.
+> [!IMPORTANT]
+> This repository is part of the reference architecture for the
+> [ControlPlane Enterprise for Flux CD](https://github.com/controlplaneio-fluxcd/distribution).
+>
+> The `d1` reference architecture comprised of
+> [d1-fleet](https://github.com/controlplaneio-fluxcd/d1-fleet),
+> [d1-infra](https://github.com/controlplaneio-fluxcd/d1-infra) and
+> [d1-apps](https://github.com/controlplaneio-fluxcd/d1-infra)
+> is a set of best practices and production-ready examples for using Flux
+> to manage the continuous delivery of Kubernetes infrastructure and
+> applications on multi-cluster multi-tenant environments.
 
 ## Scope and Access Control
+
+This repository is managed by the dev teams who are responsible for
+the delivery of applications to the Kubernetes cluster fleet.
 
 This repository is used to define the application components such as:
 
