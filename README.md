@@ -100,3 +100,24 @@ When a new chart version is pushed to the container registry, and if it matches 
 Flux will update the HelmRelease YAML definitions and will push the changes to the `main` branch.
 Then it will upgrade the Helm releases to the new version to the staging cluster.
 
+### Promotion to Production
+
+After the HelmReleases are successfully installed or upgraded on the staging cluster, a promotion pipeline
+is triggered to promote the changes to the production clusters. It effectively opens pull requests
+on the `production` branch with the updated HelmChart versions.
+
+The promotion pipeline is defined in .github/workflows/production-promotion.yaml.
+The `provider` and `alerts` used to trigger the promotion pipeline are defined in the `staging` directory
+of each component:
+
+```shell
+./components/
+├── backend
+│   └── staging
+│       ├── kustomization.yaml
+│       └── production-promotion.yaml
+└── frontend
+    └── staging
+        ├── kustomization.yaml
+        └── production-promotion.yaml
+```

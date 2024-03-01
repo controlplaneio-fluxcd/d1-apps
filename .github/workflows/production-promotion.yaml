@@ -1,0 +1,56 @@
+name: production-promotion
+on:
+  repository_dispatch:
+    types:
+      - HelmRelease/redis.backend
+      - HelmRelease/memcached.backend
+      - HelmRelease/podinfo.frontend
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    # Start promotion when the staging cluster has successfully
+    # upgraded the Helm release to a new chart version.
+    if: |
+      github.event.client_payload.metadata.env == 'staging' &&
+      github.event.client_payload.severity == 'info'      
+    steps:
+      # Checkout main branch.
+      - uses: actions/checkout@v3
+        with:
+          ref: production
+      #Parse the event metadata to determine the chart version deployed on staging.
+      - name: Get chart version from staging
+        id: staging
+        run: |
+          VERSION=$(echo ${{ github.event.client_payload.metadata.revision }} | cut -d '@' -f1)
+          NAME=$(echo ${{ github.event.client_payload.involvedObject.name }} | cut -d '@' -f1)
+          NAMESPACE=$(echo ${{ github.event.client_payload.involvedObject.namespace }} | cut -d '@' -f1)
+          echo VERSION=${VERSION} >> $GITHUB_OUTPUT          
+          echo NAME=${NAME} >> $GITHUB_OUTPUT
+          echo NAMESPACE=${NAMESPACE} >> $GITHUB_OUTPUT
+      # Patch the chart version in the production Helm release manifest.
+      - name: Set chart version in production
+        id: production
+        env:
+          CHART_VERSION: ${{ steps.staging.outputs.version }}
+          NAME: ${{ steps.staging.outputs.name }}
+          NAMESPACE: ${{ steps.staging.outputs.namespace }}
+        run: |
+          echo "set chart version to ${CHART_VERSION}"
+          yq e '(select(.spec.chart.spec.version) | .spec.chart.spec.version) = env(CHART_VERSION)' -i ./components/${NAMESPACE}/base/${NAME}.yaml      
+      # Open a Pull Request if an upgraded is needed in production.
+      - name: Open promotion PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: production-promotion-${{ steps.staging.outputs.name }}-${{ steps.staging.outputs.version }}
+          delete-branch: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Promote chart ${{ steps.staging.outputs.name }} to version ${{ steps.staging.outputs.version }}
+          title: Promote chart ${{ steps.staging.outputs.name }} to version ${{ steps.staging.outputs.version }}
+          body: |
+            Promote chart ${{ steps.staging.outputs.name }} to version ${{ steps.staging.outputs.version }}.
