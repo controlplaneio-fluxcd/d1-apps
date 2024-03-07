@@ -103,8 +103,9 @@ Then it will upgrade the Helm releases to the new version to the staging cluster
 ### Promotion to Production
 
 After the HelmReleases are successfully installed or upgraded on the staging cluster, a promotion pipeline
-is triggered to promote the changes to the production clusters. It effectively opens pull requests
-on the `production` branch with the updated HelmChart versions.
+is triggered to promote the changes to the production clusters. It effectively opens a pull request
+on the `production` branch with the updated changes from the `main` branch. The pull request will 
+keep the changes in sync between the `main` and `production` branches as long as the pull request is open.
 
 The promotion pipeline is defined in .github/workflows/production-promotion.yaml.
 The `provider` and `alerts` used to trigger the promotion pipeline are defined in the `staging` directory
