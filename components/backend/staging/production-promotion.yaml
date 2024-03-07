@@ -19,13 +19,11 @@ spec:
     name: github
   summary: "Trigger promotion"
   eventMetadata:
-    env: staging
-    cluster: staging-1
+    env: ${ENVIRONMENT}
+    cluster: ${CLUSTER_NAME}
   eventSeverity: info
   eventSources:
     - kind: HelmRelease
-      name: redis
-    - kind: HelmRelease
-      name: memcached
+      name: '*'
   inclusionList:
     - ".*succeeded.*"

@@ -2,9 +2,7 @@ name: production-promotion
 on:
   repository_dispatch:
     types:
-      - HelmRelease/redis.backend
-      - HelmRelease/memcached.backend
-      - HelmRelease/podinfo.frontend
+      - HelmRelease/* # Trigger on HelmRelease events
 
 permissions:
   contents: write
