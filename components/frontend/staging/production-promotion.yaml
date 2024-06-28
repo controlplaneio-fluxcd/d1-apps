@@ -1,0 +1,29 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: github
+  namespace: frontend
+spec:
+  type: githubdispatch
+  address: https://github.com/controlplaneio-fluxcd/d1-apps
+  secretRef:
+    name: flux-apps
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: production-promotion
+  namespace: frontend
+spec:
+  providerRef:
+    name: github
+  summary: "Trigger promotion"
+  eventMetadata:
+    env: ${ENVIRONMENT}
+    cluster: ${CLUSTER_NAME}
+  eventSeverity: info
+  eventSources:
+    - kind: HelmRelease
+      name: '*'
+  inclusionList:
+    - ".*succeeded.*"
