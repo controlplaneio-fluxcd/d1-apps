@@ -16,7 +16,7 @@ spec:
   chart:
     spec:
       chart: podinfo
-      version: 6.7.0 # {"$imagepolicy": "apps-update:frontend-podinfo:tag"}
+      version: 6.7.1 # {"$imagepolicy": "apps-update:frontend-podinfo:tag"}
       sourceRef:
         kind: HelmRepository
         name: podinfo
