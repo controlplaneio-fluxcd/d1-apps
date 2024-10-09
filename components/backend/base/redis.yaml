@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: redis
-      version: 20.1.7 # {"$imagepolicy": "apps-update:backend-redis:tag"}
+      version: 20.2.0 # {"$imagepolicy": "apps-update:backend-redis:tag"}
       sourceRef:
         kind: HelmRepository
         name: bitnamicharts
