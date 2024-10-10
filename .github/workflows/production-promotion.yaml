@@ -1,0 +1,40 @@
+name: production-promotion
+on:
+  repository_dispatch:
+    types:
+      - HelmRelease/* # Trigger on HelmRelease events
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    # Start promotion when the staging cluster has successfully
+    # upgraded the Helm release to a new chart version.
+    if: |
+      github.event.client_payload.metadata.env == 'staging' &&
+      github.event.client_payload.severity == 'info'      
+    steps:
+      # Checkout main branch.
+      - uses: actions/checkout@v4
+        with:
+          ref: production
+          fetch-depth: 0
+      # Commit changes from the main branch.
+      - name: Commit changes
+        id: commit
+        run: |
+          git pull origin main
+      # Open a Pull Request if an upgraded is needed in production.
+      - name: Open promotion PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: production-promotion
+          delete-branch: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Promote chart
+          title: Promote new changes to production
+          body: |
+            Promote new changes to production
