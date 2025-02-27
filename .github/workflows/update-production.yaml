@@ -1,0 +1,20 @@
+name: Update Production from Staging
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: 0 9 * * 1
+
+jobs:
+  update-production:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - run: gh pr create -R ${GITHUB_REPO} --base production --head main --fill-first
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPO: ${{ github.repository }}
