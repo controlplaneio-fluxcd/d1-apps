@@ -14,7 +14,12 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - run: gh pr create -R ${GITHUB_REPO} --base production --head main --fill-first
+    - run: |
+        if ! gh pr create -R ${GITHUB_REPO} --base production --head main --fill-first 2>&1 | tee logs.txt; then
+          if ! grep -q "could not find any commits between" logs.txt; then
+            exit 1
+          fi
+        fi
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPO: ${{ github.repository }}
