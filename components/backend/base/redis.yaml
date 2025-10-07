@@ -32,6 +32,9 @@ spec:
       replicaCount: 1
       persistence:
         enabled: false
+    global:
+      security:
+        allowInsecureImages: true
     image:
       repository: bitnamilegacy/redis
     sentinel:
