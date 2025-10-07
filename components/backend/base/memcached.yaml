@@ -24,6 +24,9 @@ spec:
   # https://artifacthub.io/packages/helm/bitnami/memcached?modal=values
   values:
     clusterDomain: cluster.local
+    global:
+      security:
+        allowInsecureImages: true
     image:
       repository: bitnamilegacy/memcached
     metrics:
